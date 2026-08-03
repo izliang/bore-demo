@@ -1,10 +1,10 @@
 service:
-  name: "cybercore-demo"
+  name: "bore-demo"
   port: 8000
   log_level: "INFO"
 
 database:
-  dsn: "cybertron:cybertron@2023@tcp(192.168.160.66:3306)/cybercore_demo?charset=utf8mb4&parseTime=True&loc=Local"
+  dsn: "cybertron:cybertron@2023@tcp(192.168.160.66:3306)/bore_demo?charset=utf8mb4&parseTime=True&loc=Local"
 
 trace:
   enable: true

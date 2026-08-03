@@ -246,7 +246,7 @@ func initRabbitMQ(_ context.Context) {
 	// 建立连接并存储到全局资源。
 	q, err := rabbitmq.New(opt)
 	if err != nil {
-		panic(fmt.Errorf("init cybercore rabbitmq: %w", err))
+		panic(fmt.Errorf("init bore rabbitmq: %w", err))
 	}
 	resource.Queue = q
 }

@@ -1,7 +1,7 @@
 // Package config 定义应用配置的结构体。
 //
 // 配置结构体通过 yaml tag 与 conf/ 目录下的配置文件字段一一对应。
-// 使用 cybercore/config.Cfg[T] 泛型容器加载，支持模板变量渲染。
+// 使用 bore/config.Cfg[T] 泛型容器加载，支持模板变量渲染。
 //
 // 配置加载流程：
 //

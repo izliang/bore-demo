@@ -7,7 +7,7 @@ export LANG=en_US.UTF-8
 export LC_ALL=en_US.UTF-8
 
 # --- Configuration ---
-PROJECT_NAME="cybercore-demo"
+PROJECT_NAME="bore-demo"
 echo $PROJECT_NAME
 UPLOAD_PATH="https://liang1-$PROJECT_NAME-main.app-base-platform.com/dev/deploy"
 HEALTH_URL="https://liang1-$PROJECT_NAME-main.app-base-platform.com/ping"

@@ -54,7 +54,7 @@ func SetupRoutes(r *gin.Engine) {
 	//   - UI: DocUIRedoc        → 使用 Redoc UI
 	//   - UI: DocUINone         → 不渲染 UI，仅提供 openapi.json
 	// ============================================================
-	apiRouter := cyberhuma.New(r, cyberhuma.WithHumaTitle("cybercore-demo", "1.0.0"),
+	apiRouter := cyberhuma.New(r, cyberhuma.WithHumaTitle("bore-demo", "1.0.0"),
 		cyberhuma.WithHumaDocs(router.DocConfig{
 			Exposure: router.DocAlways,
 			UI:       router.DocUISwagger,
