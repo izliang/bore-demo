@@ -30,7 +30,9 @@ import (
 
 	"github.com/gin-gonic/gin"
 	MC "github.com/izliang/bore-demo/internal/config"
+	"github.com/izliang/bore-demo/internal/model/dao"
 	"github.com/izliang/bore-demo/internal/resource"
+	"github.com/izliang/bore/appctx"
 	"github.com/izliang/bore/config"
 	"github.com/izliang/bore/db"
 	"github.com/izliang/bore/i18n"
@@ -66,19 +68,22 @@ func Init(ctx context.Context) {
 	// 【步骤4】数据库 —— 依赖配置中的 DSN 和 Logger。
 	initDB(ctx)
 
-	// 【步骤5】消息队列 —— 依赖配置中的 RabbitMQ 连接参数和 Logger。
+	// 【步骤5】RBAC 表结构迁移与种子数据 —— 依赖 DB。
+	initAdminDB(ctx)
+
+	// 【步骤6】消息队列 —— 依赖配置中的 RabbitMQ 连接参数和 Logger。
 	initRabbitMQ(ctx)
 
-	// 【步骤6】国际化 —— 依赖环境变量 LANG 和 Logger。
+	// 【步骤7】国际化 —— 依赖环境变量 LANG 和 Logger。
 	initI18n(ctx)
 
-	// 【步骤7】指标 —— 依赖 DB 实例来采集连接池指标。
+	// 【步骤8】指标 —— 依赖 DB 实例来采集连接池指标。
 	initMetrics(ctx)
 
-	// 【步骤8】配置热加载 —— 依赖 DB 和 Logger，周期性刷新缓存配置。
+	// 【步骤9】配置热加载 —— 依赖 DB 和 Logger，周期性刷新缓存配置。
 	initCachedStore(ctx)
 
-	// 【步骤9】就绪标记 —— 所有组件初始化完毕后，标记服务可接受请求。
+	// 【步骤10】就绪标记 —— 所有组件初始化完毕后，标记服务可接受请求。
 	initAccepting(ctx)
 
 	initTrace(ctx)
@@ -92,18 +97,21 @@ func Init(ctx context.Context) {
 //   - POD_NAME：Pod 名称，用于日志追踪和指标标签
 func initEnv(_ context.Context) {
 	// SIGN_ONE_HUNDRED_APP 是平台注入的应用别名，配置文件中通过模板变量引用。
-	signOneHundredApp := os.Getenv("SIGN_ONE_HUNDRED_APP")
+	signOneHundredApp := "app"
+	//os.Getenv("SIGN_ONE_HUNDRED_APP")
 	if signOneHundredApp == "" {
 		panic("env SIGN_ONE_HUNDRED_APP must be set")
 	}
 	resource.SignOneHundredApp = signOneHundredApp
 
 	// POD_NAME 用于日志中标识 Pod 实例，容器环境由 K8s Downward API 注入。
-	podName := os.Getenv("POD_NAME")
+	podName := "app-pod"
+	//os.Getenv("POD_NAME")
 	resource.PodName = podName
 
 	// SIGN_ONE_HUNDRED_DOMAIN 是平台域名，配置文件中通过模板变量引用。
-	signOneHundredDomain := os.Getenv("SIGN_ONE_HUNDRED_DOMAIN")
+	signOneHundredDomain := "domain"
+	//os.Getenv("SIGN_ONE_HUNDRED_DOMAIN")
 	if signOneHundredDomain == "" {
 		panic("env SIGN_ONE_HUNDRED_DOMAIN must be set")
 	}
@@ -146,10 +154,11 @@ func initConfig(_ context.Context) {
 	// 加载配置文件并用环境变量渲染模板占位符。
 	configPath := filepath.Join("conf", configFile)
 	resource.AppConfig = config.New[MC.AppConfig]()
-	if err := resource.AppConfig.LoadRootFile(configPath,
-		config.WithTemplate("SignOneHundredApp", resource.SignOneHundredApp),
-		config.WithTemplate("SignOneHundredDomain", resource.SignOneHundredDomain),
-	); err != nil {
+	resource.AppConfig.SetTemplates(map[string]string{
+		"SignOneHundredApp":    resource.SignOneHundredApp,
+		"SignOneHundredDomain": resource.SignOneHundredDomain,
+	})
+	if err := resource.AppConfig.LoadRootFile(configPath); err != nil {
 		panic(fmt.Errorf("failed to load config from %s: %w", configPath, err))
 	}
 
@@ -189,7 +198,8 @@ func initLogger(_ context.Context) {
 	tmpLog.Info(context.Background(), "init logger config", logit.JSONAbsField("config", conf))
 
 	// 创建 Zap logger 并存储到全局资源。
-	resource.Logger = logit.NewZapWithConfig(conf)
+	//resource.Logger = logit.NewZapWithConfig(conf)
+	resource.Logger = logit.NewSimple(os.Stdout)
 
 	// 非开发环境关闭 Gin 的调试输出（避免启动时打印大量 [GIN-debug] 路由信息）。
 	if resource.Env != "" && resource.Env != "dev" {
@@ -212,6 +222,24 @@ func initLogger(_ context.Context) {
 			},
 		},
 	))
+}
+
+// initAdminDB 初始化 RBAC 数据表并写入种子数据。
+//
+// 依赖 initDB 完成数据库连接；幂等，可安全重复启动。
+func initAdminDB(ctx context.Context) {
+	atx := appctx.New(
+		appctx.WithContext(ctx),
+		appctx.WithLogger(resource.Logger),
+		appctx.WithGORM(resource.DB),
+	)
+	if err := dao.Migrate(atx); err != nil {
+		panic(fmt.Errorf("init admin db migrate: %w", err))
+	}
+	if err := dao.Seed(atx); err != nil {
+		panic(fmt.Errorf("init admin db seed: %w", err))
+	}
+	resource.Logger.Info(ctx, "init admin db (migrate + seed) done")
 }
 
 // initRabbitMQ 初始化 RabbitMQ 消息队列连接。
@@ -307,6 +335,9 @@ func initI18n(ctx context.Context) {
 		DefaultLang: lang,
 		StrictMode:  true,
 	})
+
+	// 保存完整 Bundle 供 amis Engine 等组件使用。
+	resource.I18nBundle = bundle
 
 	// 根据当前语言创建 Localizer 实例。
 	resource.Localizer = bundle.L(lang)

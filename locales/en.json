@@ -1,7 +1,332 @@
 [
   {
-    "key": "test_key",
-    "value": "this is a test value",
-    "desc": "this is description"
+    "key": "admins.add",
+    "value": "Add Admin",
+    "desc": ""
+  },
+  {
+    "key": "admins.confirmDelete",
+    "value": "Delete this admin?",
+    "desc": ""
+  },
+  {
+    "key": "admins.edit",
+    "value": "Edit Admin",
+    "desc": ""
+  },
+  {
+    "key": "admins.email",
+    "value": "Email",
+    "desc": ""
+  },
+  {
+    "key": "admins.lastLoginAt",
+    "value": "Last Login",
+    "desc": ""
+  },
+  {
+    "key": "admins.nickname",
+    "value": "Nickname",
+    "desc": ""
+  },
+  {
+    "key": "admins.password",
+    "value": "Password",
+    "desc": ""
+  },
+  {
+    "key": "admins.passwordEditPlaceholder",
+    "value": "Leave blank to keep current password",
+    "desc": ""
+  },
+  {
+    "key": "admins.phone",
+    "value": "Phone",
+    "desc": ""
+  },
+  {
+    "key": "admins.roles",
+    "value": "Roles",
+    "desc": ""
+  },
+  {
+    "key": "admins.searchPlaceholder",
+    "value": "Search by username or nickname",
+    "desc": ""
+  },
+  {
+    "key": "admins.title",
+    "value": "Admins",
+    "desc": ""
+  },
+  {
+    "key": "admins.username",
+    "value": "Username",
+    "desc": ""
+  },
+  {
+    "key": "auth.password",
+    "value": "Password",
+    "desc": ""
+  },
+  {
+    "key": "auth.passwordPlaceholder",
+    "value": "Enter password",
+    "desc": ""
+  },
+  {
+    "key": "auth.username",
+    "value": "Username",
+    "desc": ""
+  },
+  {
+    "key": "auth.usernamePlaceholder",
+    "value": "Enter username",
+    "desc": ""
+  },
+  {
+    "key": "common.batchDelete",
+    "value": "Batch Delete",
+    "desc": ""
+  },
+  {
+    "key": "common.delete",
+    "value": "Delete",
+    "desc": ""
+  },
+  {
+    "key": "common.edit",
+    "value": "Edit",
+    "desc": ""
+  },
+  {
+    "key": "common.logout",
+    "value": "Sign Out",
+    "desc": ""
+  },
+  {
+    "key": "common.signIn",
+    "value": "Sign In",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.adminCountDesc",
+    "value": "Total Admins",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.menuCountDesc",
+    "value": "Total Menus",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.roleCountDesc",
+    "value": "Total Roles",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.title",
+    "value": "Dashboard",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.welcome",
+    "value": "Welcome back 👋",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.welcomeDesc",
+    "value": "RBAC admin console built with bore web/amis",
+    "desc": ""
+  },
+  {
+    "key": "label.id",
+    "value": "ID",
+    "desc": ""
+  },
+  {
+    "key": "menus.add",
+    "value": "Add Menu",
+    "desc": ""
+  },
+  {
+    "key": "menus.button",
+    "value": "Button",
+    "desc": ""
+  },
+  {
+    "key": "menus.confirmDelete",
+    "value": "Delete this menu?",
+    "desc": ""
+  },
+  {
+    "key": "menus.dir",
+    "value": "Directory",
+    "desc": ""
+  },
+  {
+    "key": "menus.edit",
+    "value": "Edit Menu",
+    "desc": ""
+  },
+  {
+    "key": "menus.icon",
+    "value": "Icon",
+    "desc": ""
+  },
+  {
+    "key": "menus.menu",
+    "value": "Menu",
+    "desc": ""
+  },
+  {
+    "key": "menus.menuName",
+    "value": "Menu Name",
+    "desc": ""
+  },
+  {
+    "key": "menus.menuType",
+    "value": "Menu Type",
+    "desc": ""
+  },
+  {
+    "key": "menus.orderNum",
+    "value": "Order",
+    "desc": ""
+  },
+  {
+    "key": "menus.parentMenu",
+    "value": "Parent Menu",
+    "desc": ""
+  },
+  {
+    "key": "menus.path",
+    "value": "Path",
+    "desc": ""
+  },
+  {
+    "key": "menus.perms",
+    "value": "Perms",
+    "desc": ""
+  },
+  {
+    "key": "menus.title",
+    "value": "Menus",
+    "desc": ""
+  },
+  {
+    "key": "menus.visible",
+    "value": "Visible",
+    "desc": ""
+  },
+  {
+    "key": "roles.add",
+    "value": "Add Role",
+    "desc": ""
+  },
+  {
+    "key": "roles.confirmDelete",
+    "value": "Delete this role?",
+    "desc": ""
+  },
+  {
+    "key": "roles.edit",
+    "value": "Edit Role",
+    "desc": ""
+  },
+  {
+    "key": "roles.keyHint",
+    "value": "e.g. ops_admin (lowercase, immutable after creation)",
+    "desc": ""
+  },
+  {
+    "key": "roles.permissions",
+    "value": "Menu Permissions",
+    "desc": ""
+  },
+  {
+    "key": "roles.remark",
+    "value": "Remark",
+    "desc": ""
+  },
+  {
+    "key": "roles.roleKey",
+    "value": "Role Key",
+    "desc": ""
+  },
+  {
+    "key": "roles.roleName",
+    "value": "Role Name",
+    "desc": ""
+  },
+  {
+    "key": "roles.roleSort",
+    "value": "Order",
+    "desc": ""
+  },
+  {
+    "key": "roles.searchPlaceholder",
+    "value": "Search by role name or key",
+    "desc": ""
+  },
+  {
+    "key": "roles.title",
+    "value": "Roles",
+    "desc": ""
+  },
+  {
+    "key": "settings.about",
+    "value": "About",
+    "desc": ""
+  },
+  {
+    "key": "settings.basic",
+    "value": "Basic",
+    "desc": ""
+  },
+  {
+    "key": "settings.description",
+    "value": "Description",
+    "desc": ""
+  },
+  {
+    "key": "settings.systemName",
+    "value": "System Name",
+    "desc": ""
+  },
+  {
+    "key": "settings.title",
+    "value": "Settings",
+    "desc": ""
+  },
+  {
+    "key": "settings.version",
+    "value": "Version",
+    "desc": ""
+  },
+  {
+    "key": "status.disabled",
+    "value": "Disabled",
+    "desc": ""
+  },
+  {
+    "key": "status.enabled",
+    "value": "Enabled",
+    "desc": ""
+  },
+  {
+    "key": "table.action",
+    "value": "Action",
+    "desc": ""
+  },
+  {
+    "key": "table.createdAt",
+    "value": "Created At",
+    "desc": ""
+  },
+  {
+    "key": "table.status",
+    "value": "Status",
+    "desc": ""
   }
 ]

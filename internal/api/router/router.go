@@ -17,9 +17,11 @@ import (
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/izliang/bore-demo/internal/api/admin"
 	"github.com/izliang/bore-demo/internal/api/controller"
 	"github.com/izliang/bore-demo/internal/resource"
 	"github.com/izliang/bore/e"
+	"github.com/izliang/bore/web/middleware"
 	"github.com/izliang/bore/web/router"
 	"github.com/izliang/bore/web/router/cyberhuma"
 )
@@ -41,6 +43,9 @@ func SetupRoutes(r *gin.Engine) {
 	for _, ginMiddleware := range resource.GinMiddlewares {
 		r.Use(ginMiddleware)
 	}
+
+	// 语言检测中间件（供 amis 页面 i18n 渲染使用）。
+	r.Use(middleware.LanguageMiddleware())
 
 	// ============================================================
 	// 创建 API Router（基于 cyberhuma，自动 OpenAPI 文档）
@@ -69,6 +74,14 @@ func SetupRoutes(r *gin.Engine) {
 	cyberhuma.GET(apiRouter, "/health", healthCheck)
 
 	// ============================================================
+	// AMIS 管理后台（登录页 /admin/* 页面 / 登录登出 API）
+	// ============================================================
+	adminMW, err := admin.Setup(r)
+	if err != nil {
+		panic("setup amis admin: " + err.Error())
+	}
+
+	// ============================================================
 	// API v1 业务路由
 	// ============================================================
 
@@ -83,6 +96,46 @@ func SetupRoutes(r *gin.Engine) {
 		//   - 生成 OpenAPI 文档
 		//   - 参数校验失败时返回 422 + 友好错误信息
 		cyberhuma.GET(userApi, "/get", controller.GetUser)
+
+		// ────────────────────────────────────────────────────
+		// /api/v1/auth —— 管理后台鉴权信息（登录态）
+		// ────────────────────────────────────────────────────
+		authApi := apiV1.Group("/auth", cyberhuma.WithGroupGinMiddleware(adminMW.RequireLogin()))
+		cyberhuma.GET(authApi, "/info", controller.GetAuthInfo, cyberhuma.WithTags("auth"))
+
+		// ────────────────────────────────────────────────────
+		// /api/v1/admin —— 管理员管理（登录态 + 接口级权限）
+		// 权限在 controller 入口通过 admin.CheckPerm 声明，便于审计。
+		// ────────────────────────────────────────────────────
+		adminApi := apiV1.Group("/admin", cyberhuma.WithGroupGinMiddleware(adminMW.RequireLogin()))
+		cyberhuma.GET(adminApi, "/list", controller.ListAdmins, cyberhuma.WithTags("admin"))
+		cyberhuma.GET(adminApi, "/get", controller.GetAdmin, cyberhuma.WithTags("admin"))
+		cyberhuma.POST(adminApi, "/create", controller.CreateAdmin, cyberhuma.WithTags("admin"))
+		cyberhuma.PUT(adminApi, "/update", controller.UpdateAdmin, cyberhuma.WithTags("admin"))
+		cyberhuma.DELETE(adminApi, "/delete", controller.DeleteAdmin, cyberhuma.WithTags("admin"))
+		cyberhuma.POST(adminApi, "/batch-delete", controller.BatchDeleteAdmins, cyberhuma.WithTags("admin"))
+		cyberhuma.GET(adminApi, "/stats", controller.AdminStats, cyberhuma.WithTags("admin"))
+
+		// ────────────────────────────────────────────────────
+		// /api/v1/role —— 角色管理（登录态 + 接口级权限）
+		// ────────────────────────────────────────────────────
+		roleApi := apiV1.Group("/role", cyberhuma.WithGroupGinMiddleware(adminMW.RequireLogin()))
+		cyberhuma.GET(roleApi, "/list", controller.ListRoles, cyberhuma.WithTags("role"))
+		cyberhuma.GET(roleApi, "/get", controller.GetRole, cyberhuma.WithTags("role"))
+		cyberhuma.GET(roleApi, "/options", controller.ListRoleOptions, cyberhuma.WithTags("role"))
+		cyberhuma.POST(roleApi, "/create", controller.CreateRole, cyberhuma.WithTags("role"))
+		cyberhuma.PUT(roleApi, "/update", controller.UpdateRole, cyberhuma.WithTags("role"))
+		cyberhuma.DELETE(roleApi, "/delete", controller.DeleteRole, cyberhuma.WithTags("role"))
+
+		// ────────────────────────────────────────────────────
+		// /api/v1/menu —— 菜单/权限管理（登录态 + 接口级权限）
+		// ────────────────────────────────────────────────────
+		menuApi := apiV1.Group("/menu", cyberhuma.WithGroupGinMiddleware(adminMW.RequireLogin()))
+		cyberhuma.GET(menuApi, "/tree", controller.MenuTree, cyberhuma.WithTags("menu"))
+		cyberhuma.GET(menuApi, "/get", controller.GetMenu, cyberhuma.WithTags("menu"))
+		cyberhuma.POST(menuApi, "/create", controller.CreateMenu, cyberhuma.WithTags("menu"))
+		cyberhuma.PUT(menuApi, "/update", controller.UpdateMenu, cyberhuma.WithTags("menu"))
+		cyberhuma.DELETE(menuApi, "/delete", controller.DeleteMenu, cyberhuma.WithTags("menu"))
 	}
 }
 

@@ -1,0 +1,291 @@
+{
+  "type": "page",
+  "title": "$t.roles.title",
+  "initApi": "/api/v1/auth/info",
+  "aside": {
+    "type": "wrapper",
+    "size": "none",
+    "body": [
+      {
+        "type": "tpl",
+        "tpl": "<div style='padding:28px 20px 20px;border-bottom:1px solid var(--borderColor,#e8e8e8);text-align:center'><div style='display:inline-flex;align-items:center;justify-content:center;width:52px;height:52px;border-radius:14px;background:linear-gradient(135deg,#6366f1 0%,#8b5cf6 50%,#a855f7 100%);margin-bottom:12px;box-shadow:0 4px 14px rgba(99,102,241,0.35)'><span style='font-size:26px;line-height:1;color:#fff;filter:drop-shadow(0 1px 2px rgba(0,0,0,0.2))'>⚡</span></div><div style='font-size:17px;font-weight:700;color:var(--textColor,#1a1a2e);line-height:1.3;letter-spacing:0.3px'>bore-demo</div><div style='font-size:11px;color:var(--text--muted-color,#8899bb);margin-top:4px;font-weight:500'>Admin Console</div></div>"
+      },
+      {
+        "type": "nav",
+        "stacked": true,
+        "className": "w-52 flex-auto",
+        "style": {
+          "paddingTop": "4px"
+        },
+        "links": [
+          {
+            "label": "$t.dashboard.title",
+            "to": "/admin/dashboard",
+            "icon": "fa fa-dashboard",
+            "active": false
+          },
+          {
+            "label": "$t.admins.title",
+            "to": "/admin/admins",
+            "icon": "fa fa-users",
+            "active": false,
+            "visibleOn": "this.perms && this.perms.indexOf('admin:list') > -1"
+          },
+          {
+            "label": "$t.roles.title",
+            "to": "/admin/roles",
+            "icon": "fa fa-user-circle",
+            "active": true,
+            "visibleOn": "this.perms && this.perms.indexOf('role:list') > -1"
+          },
+          {
+            "label": "$t.menus.title",
+            "to": "/admin/menus",
+            "icon": "fa fa-list",
+            "active": false,
+            "visibleOn": "this.perms && this.perms.indexOf('menu:list') > -1"
+          },
+          {
+            "label": "$t.settings.title",
+            "to": "/admin/settings",
+            "icon": "fa fa-cog",
+            "active": false
+          }
+        ]
+      }
+    ]
+  },
+  "asideResizor": true,
+  "toolbar": [
+    {
+      "type": "tpl",
+      "tpl": "<span class='text-muted' style='font-size:13px;margin:0 4px'>👤 ${nickname|default:username}</span>"
+    },
+    {
+      "type": "button",
+      "label": "$t.common.logout",
+      "icon": "fa fa-sign-out",
+      "level": "link",
+      "actionType": "url",
+      "url": "/api/logout",
+      "blank": false
+    }
+  ],
+  "body": {
+    "type": "crud",
+    "syncLocation": false,
+    "api": "/api/v1/role/list",
+    "filter": {
+      "body": [
+        {
+          "type": "input-text",
+          "name": "keyword",
+          "label": "",
+          "placeholder": "$t.roles.searchPlaceholder",
+          "clearable": true,
+          "size": "md"
+        }
+      ]
+    },
+    "headerToolbar": [
+      {
+        "type": "button",
+        "label": "$t.roles.add",
+        "icon": "fa fa-plus",
+        "level": "primary",
+        "actionType": "dialog",
+        "visibleOn": "this.perms && this.perms.indexOf('role:add') > -1",
+        "dialog": {
+          "title": "$t.roles.add",
+          "size": "lg",
+          "body": {
+            "type": "form",
+            "api": "post:/api/v1/role/create",
+            "body": [
+              {
+                "type": "input-text",
+                "name": "role_name",
+                "label": "$t.roles.roleName",
+                "required": true
+              },
+              {
+                "type": "input-text",
+                "name": "role_key",
+                "label": "$t.roles.roleKey",
+                "required": true,
+                "placeholder": "$t.roles.keyHint"
+              },
+              {
+                "type": "input-number",
+                "name": "role_sort",
+                "label": "$t.roles.roleSort",
+                "value": 0
+              },
+              {
+                "type": "select",
+                "name": "status",
+                "label": "$t.table.status",
+                "options": [
+                  {
+                    "label": "$t.status.enabled",
+                    "value": 1
+                  },
+                  {
+                    "label": "$t.status.disabled",
+                    "value": 0
+                  }
+                ],
+                "value": 1
+              },
+              {
+                "type": "textarea",
+                "name": "remark",
+                "label": "$t.roles.remark"
+              },
+              {
+                "type": "tree",
+                "name": "menu_ids",
+                "label": "$t.roles.permissions",
+                "source": "/api/v1/menu/tree",
+                "multiple": true,
+                "cascade": true,
+                "onlyChildren": false,
+                "valueField": "id",
+                "labelField": "menu_name",
+                "childrenField": "children",
+                "showIcon": false,
+                "heightAuto": true,
+                "selectable": true
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "footerToolbar": [
+      "statistics",
+      "pagination"
+    ],
+    "columns": [
+      {
+        "name": "id",
+        "label": "$t.label.id",
+        "width": 70
+      },
+      {
+        "name": "role_name",
+        "label": "$t.roles.roleName"
+      },
+      {
+        "name": "role_key",
+        "label": "$t.roles.roleKey"
+      },
+      {
+        "name": "role_sort",
+        "label": "$t.roles.roleSort",
+        "width": 90
+      },
+      {
+        "name": "status",
+        "label": "$t.table.status",
+        "type": "mapping",
+        "map": {
+          "1": "$t.status.enabled",
+          "0": "$t.status.disabled"
+        }
+      },
+      {
+        "name": "remark",
+        "label": "$t.roles.remark"
+      },
+      {
+        "name": "created_at",
+        "label": "$t.table.createdAt",
+        "type": "tpl",
+        "tpl": "${created_at|dateTime:'YYYY-MM-DD HH:mm:ss'}"
+      },
+      {
+        "type": "operation",
+        "label": "$t.table.action",
+        "width": 180,
+        "buttons": [
+          {
+            "type": "button",
+            "label": "$t.common.edit",
+            "level": "link",
+            "actionType": "dialog",
+            "visibleOn": "this.perms && this.perms.indexOf('role:edit') > -1",
+            "dialog": {
+              "title": "$t.roles.edit",
+              "size": "lg",
+              "body": {
+                "type": "form",
+                "api": "put:/api/v1/role/update",
+                "initApi": "get:/api/v1/role/get?id=${id}",
+                "body": [
+                  {
+                    "type": "input-text",
+                    "name": "role_name",
+                    "label": "$t.roles.roleName",
+                    "required": true
+                  },
+                  {
+                    "type": "input-number",
+                    "name": "role_sort",
+                    "label": "$t.roles.roleSort",
+                    "value": 0
+                  },
+                  {
+                    "type": "select",
+                    "name": "status",
+                    "label": "$t.table.status",
+                    "options": [
+                      {
+                        "label": "$t.status.enabled",
+                        "value": 1
+                      },
+                      {
+                        "label": "$t.status.disabled",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  {
+                    "type": "textarea",
+                    "name": "remark",
+                    "label": "$t.roles.remark"
+                  },
+                  {
+                    "type": "tree",
+                    "name": "menu_ids",
+                    "label": "$t.roles.permissions",
+                    "source": "/api/v1/menu/tree",
+                    "multiple": true,
+                    "cascade": true,
+                    "onlyChildren": false,
+                    "valueField": "id",
+                    "labelField": "menu_name",
+                    "childrenField": "children",
+                    "showIcon": false,
+                    "heightAuto": true,
+                    "selectable": true
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "button",
+            "label": "$t.common.delete",
+            "level": "link",
+            "className": "text-danger",
+            "actionType": "ajax",
+            "api": "delete:/api/v1/role/delete?id=${id}",
+            "confirmText": "$t.roles.confirmDelete",
+            "visibleOn": "this.perms && this.perms.indexOf('role:remove') > -1"
+          }
+        ]
+      }
+    ]
+  }
+}

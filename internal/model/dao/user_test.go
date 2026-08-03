@@ -73,7 +73,7 @@ func Test_GetUser(t *testing.T) {
 			mock: func(mock sqlmock.Sqlmock) {
 				rows := sqlmock.NewRows([]string{"id", "name", "meta"}).
 					AddRow(1, "test", `{"avatar_url":"https://www.aaa.com/pic.png"}`)
-				mock.ExpectQuery("^SELECT \\* FROM `users` WHERE `users`.`id` = \\? ORDER BY `users`.`id` LIMIT \\?$").
+				mock.ExpectQuery("^SELECT \\* FROM `user` WHERE `user`.`id` = \\? ORDER BY `user`.`id` LIMIT \\?$").
 					WithArgs(1, 1).
 					WillReturnRows(rows)
 			},

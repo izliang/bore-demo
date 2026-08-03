@@ -112,6 +112,10 @@ var Metrics *prometheus.Registry
 // 在 initI18n 中初始化，根据 LANG 环境变量选择语言。
 var Localizer i18n.Localizer
 
+// I18nBundle i18n 翻译包（*i18n.Bundle）。
+// 供 amis Engine（amis.WithI18n）等需要完整 Bundle 的组件使用。
+var I18nBundle *i18n.Bundle
+
 // ============================================================
 // 服务状态
 // ============================================================

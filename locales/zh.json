@@ -1,7 +1,332 @@
 [
   {
-    "key": "test_key",
-    "value": "这是一个测试的值",
-    "desc": "这是一个测试描述信息"
+    "key": "admins.add",
+    "value": "新增管理员",
+    "desc": ""
+  },
+  {
+    "key": "admins.confirmDelete",
+    "value": "确认删除该管理员？",
+    "desc": ""
+  },
+  {
+    "key": "admins.edit",
+    "value": "编辑管理员",
+    "desc": ""
+  },
+  {
+    "key": "admins.email",
+    "value": "邮箱",
+    "desc": ""
+  },
+  {
+    "key": "admins.lastLoginAt",
+    "value": "最近登录",
+    "desc": ""
+  },
+  {
+    "key": "admins.nickname",
+    "value": "昵称",
+    "desc": ""
+  },
+  {
+    "key": "admins.password",
+    "value": "密码",
+    "desc": ""
+  },
+  {
+    "key": "admins.passwordEditPlaceholder",
+    "value": "留空则不修改密码",
+    "desc": ""
+  },
+  {
+    "key": "admins.phone",
+    "value": "手机号",
+    "desc": ""
+  },
+  {
+    "key": "admins.roles",
+    "value": "角色",
+    "desc": ""
+  },
+  {
+    "key": "admins.searchPlaceholder",
+    "value": "搜索用户名或昵称",
+    "desc": ""
+  },
+  {
+    "key": "admins.title",
+    "value": "管理员管理",
+    "desc": ""
+  },
+  {
+    "key": "admins.username",
+    "value": "用户名",
+    "desc": ""
+  },
+  {
+    "key": "auth.password",
+    "value": "密码",
+    "desc": ""
+  },
+  {
+    "key": "auth.passwordPlaceholder",
+    "value": "请输入密码",
+    "desc": ""
+  },
+  {
+    "key": "auth.username",
+    "value": "用户名",
+    "desc": ""
+  },
+  {
+    "key": "auth.usernamePlaceholder",
+    "value": "请输入用户名",
+    "desc": ""
+  },
+  {
+    "key": "common.batchDelete",
+    "value": "批量删除",
+    "desc": ""
+  },
+  {
+    "key": "common.delete",
+    "value": "删除",
+    "desc": ""
+  },
+  {
+    "key": "common.edit",
+    "value": "编辑",
+    "desc": ""
+  },
+  {
+    "key": "common.logout",
+    "value": "退出登录",
+    "desc": ""
+  },
+  {
+    "key": "common.signIn",
+    "value": "登 录",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.adminCountDesc",
+    "value": "管理员总数",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.menuCountDesc",
+    "value": "菜单/权限总数",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.roleCountDesc",
+    "value": "角色总数",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.title",
+    "value": "仪表盘",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.welcome",
+    "value": "欢迎回来 👋",
+    "desc": ""
+  },
+  {
+    "key": "dashboard.welcomeDesc",
+    "value": "这是基于 bore web/amis 的 RBAC 管理后台示例",
+    "desc": ""
+  },
+  {
+    "key": "label.id",
+    "value": "ID",
+    "desc": ""
+  },
+  {
+    "key": "menus.add",
+    "value": "新增菜单",
+    "desc": ""
+  },
+  {
+    "key": "menus.button",
+    "value": "按钮",
+    "desc": ""
+  },
+  {
+    "key": "menus.confirmDelete",
+    "value": "确认删除该菜单？",
+    "desc": ""
+  },
+  {
+    "key": "menus.dir",
+    "value": "目录",
+    "desc": ""
+  },
+  {
+    "key": "menus.edit",
+    "value": "编辑菜单",
+    "desc": ""
+  },
+  {
+    "key": "menus.icon",
+    "value": "图标",
+    "desc": ""
+  },
+  {
+    "key": "menus.menu",
+    "value": "菜单",
+    "desc": ""
+  },
+  {
+    "key": "menus.menuName",
+    "value": "菜单名称",
+    "desc": ""
+  },
+  {
+    "key": "menus.menuType",
+    "value": "菜单类型",
+    "desc": ""
+  },
+  {
+    "key": "menus.orderNum",
+    "value": "排序号",
+    "desc": ""
+  },
+  {
+    "key": "menus.parentMenu",
+    "value": "父菜单",
+    "desc": ""
+  },
+  {
+    "key": "menus.path",
+    "value": "路由路径",
+    "desc": ""
+  },
+  {
+    "key": "menus.perms",
+    "value": "权限标识",
+    "desc": ""
+  },
+  {
+    "key": "menus.title",
+    "value": "菜单管理",
+    "desc": ""
+  },
+  {
+    "key": "menus.visible",
+    "value": "是否显示",
+    "desc": ""
+  },
+  {
+    "key": "roles.add",
+    "value": "新增角色",
+    "desc": ""
+  },
+  {
+    "key": "roles.confirmDelete",
+    "value": "确认删除该角色？",
+    "desc": ""
+  },
+  {
+    "key": "roles.edit",
+    "value": "编辑角色",
+    "desc": ""
+  },
+  {
+    "key": "roles.keyHint",
+    "value": "如 ops_admin（小写字母开头，创建后不可修改）",
+    "desc": ""
+  },
+  {
+    "key": "roles.permissions",
+    "value": "菜单权限",
+    "desc": ""
+  },
+  {
+    "key": "roles.remark",
+    "value": "备注",
+    "desc": ""
+  },
+  {
+    "key": "roles.roleKey",
+    "value": "角色标识",
+    "desc": ""
+  },
+  {
+    "key": "roles.roleName",
+    "value": "角色名称",
+    "desc": ""
+  },
+  {
+    "key": "roles.roleSort",
+    "value": "显示顺序",
+    "desc": ""
+  },
+  {
+    "key": "roles.searchPlaceholder",
+    "value": "搜索角色名称或标识",
+    "desc": ""
+  },
+  {
+    "key": "roles.title",
+    "value": "角色管理",
+    "desc": ""
+  },
+  {
+    "key": "settings.about",
+    "value": "关于",
+    "desc": ""
+  },
+  {
+    "key": "settings.basic",
+    "value": "基本设置",
+    "desc": ""
+  },
+  {
+    "key": "settings.description",
+    "value": "系统描述",
+    "desc": ""
+  },
+  {
+    "key": "settings.systemName",
+    "value": "系统名称",
+    "desc": ""
+  },
+  {
+    "key": "settings.title",
+    "value": "系统设置",
+    "desc": ""
+  },
+  {
+    "key": "settings.version",
+    "value": "版本",
+    "desc": ""
+  },
+  {
+    "key": "status.disabled",
+    "value": "禁用",
+    "desc": ""
+  },
+  {
+    "key": "status.enabled",
+    "value": "启用",
+    "desc": ""
+  },
+  {
+    "key": "table.action",
+    "value": "操作",
+    "desc": ""
+  },
+  {
+    "key": "table.createdAt",
+    "value": "创建时间",
+    "desc": ""
+  },
+  {
+    "key": "table.status",
+    "value": "状态",
+    "desc": ""
   }
 ]
